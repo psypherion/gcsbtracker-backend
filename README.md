@@ -2,8 +2,11 @@
 A backend service written in python that scrapes Google Cloud Skills Boost profiles to track skill badges and arcade game completions. The project leverages the Starlette framework for the backend API, along with a scheduler to periodically update profile data. Users can retrieve profile information through a RESTful API.
 
 ## Table of Contents
-- [Description](#description)
-- [Installation](#installation)
+- [Description](#gcsbtracker-backend)
+- [Features](#Features)
+- [Project Structure](#ProjectStructure)
+- [Requirements](#Requirements)
+- [Setup](#Setup)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -23,17 +26,23 @@ A backend service written in python that scrapes Google Cloud Skills Boost profi
 - Logging system for monitoring server activity.
 
 ## Project Structure
-
 .
 ├── getData.py              # Script to read CSV, scrape profiles, and save to JSON
+
 ├── scraper.py              # Contains the Scraper class for scraping profile data
+
 ├── server.py               # The Starlette server for the API
+
 ├── requirements.txt        # List of project dependencies
-└── profiles_data.json      # Output JSON file for profile data(generated)
+
+└── profiles_data.json      # Output JSON file for profile data (generated)
+
 
 ## Requirements
 - Python 3.7 or higher
 - Required libraries listed in requirements.txt
+- A csv file containing all the profile links to run getData.py
+- for a single profile scraping use scraper.py
 
 To install the required libraries, run:
 
@@ -84,9 +93,11 @@ curl http://localhost:8000/profiles/id/{profile_id}
 ### in Browser
 
 1. Navigate to http://localhost:8000/profiles/
-![alt text](image.png)
+![image](https://github.com/user-attachments/assets/187d51b9-99fe-4498-a24e-396d055f3386)
+
 2. Navigate to http://localhost:8000/profiles/id/{id}
-![alt text](image-1.png)
+![image](https://github.com/user-attachments/assets/6c691cb8-2080-43a8-889c-a239cc9bead9)
+
 
 
 ## Contributing
