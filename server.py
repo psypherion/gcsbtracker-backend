@@ -29,7 +29,7 @@ async def profiles(request) -> JSONResponse:
     Returns:
         JSONResponse: A JSON response containing all profiles.
     """
-    data = load_data('profiles_data.json')  # Path to your JSON file
+    data = load_data('profiles_data.json')  
     return JSONResponse(data)
 
 

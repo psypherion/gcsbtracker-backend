@@ -67,6 +67,8 @@ class Scraper:
         date_matches: List[str] = re.findall(date_pattern, self.html_content)
 
         badge_dict: Dict[str, Dict[str, str]] = {}
+
+        # Extract badges and their details
         for (badge_name, badge_image, _), date in zip(badge_matches, date_matches):
             badge_name = html.unescape(badge_name.strip())
             badge_image = html.unescape(badge_image.strip())
@@ -74,19 +76,28 @@ class Scraper:
                 "badge_image": badge_image,
                 "earned_date": date.strip()
             }
-        return badge_dict
+
+        # Add the number of badges earned
+        number_of_badges_earned: int = len(badge_dict)
+        
+        return {
+            "badges": badge_dict,
+            "number_of_badges_earned": number_of_badges_earned
+        }
 
     def compile_profile_info(self) -> Dict[str, Optional[dict]]:
         """Compiles all profile information into a structured dictionary."""
+        badges_info = self.get_badges()  # Get badge info which includes count
         profile_data: Dict[str, Optional[dict]] = {
             "profile_name": self.get_username(),
             "general": {
                 "league": self.get_league(),
                 "member_since": self.get_member_since(),
                 "earned_points": self.get_earned_points(),
-                "profile_image": self.get_profile_image()
+                "profile_image": self.get_profile_image(),
+                "number_of_badges_earned": badges_info["number_of_badges_earned"]  # Include badge count here
             },
-            "badges": self.get_badges()
+            "badges": badges_info["badges"]  # Only include badges without count
         }
         return profile_data
 
