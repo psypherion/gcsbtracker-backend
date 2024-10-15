@@ -87,7 +87,7 @@ class Scraper:
 
     def compile_profile_info(self) -> Dict[str, Optional[dict]]:
         """Compiles all profile information into a structured dictionary."""
-        badges_info = self.get_badges()  # Get badge info which includes count
+        badges_info = self.get_badges()  
         profile_data: Dict[str, Optional[dict]] = {
             "profile_name": self.get_username(),
             "general": {
@@ -97,7 +97,7 @@ class Scraper:
                 "profile_image": self.get_profile_image(),
                 "number_of_badges_earned": badges_info["number_of_badges_earned"]  # Include badge count here
             },
-            "badges": badges_info["badges"]  # Only include badges without count
+            "badges": badges_info["badges"]  
         }
         return profile_data
 

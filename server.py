@@ -44,7 +44,7 @@ async def get_profile(request) -> JSONResponse:
         JSONResponse: A JSON response with the requested profile or an error message.
     """
     profile_id: str = request.path_params['id']
-    data: Dict[str, Any] = load_data('profiles_data.json')  # Path to your JSON file
+    data: Dict[str, Any] = load_data('profiles_data.json')  
 
     # Find the profile by ID
     profile: Dict[str, Any] = {}
