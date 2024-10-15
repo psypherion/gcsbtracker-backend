@@ -42,7 +42,7 @@ A backend service written in python that scrapes Google Cloud Skills Boost profi
 ## Requirements
 - Python 3.7 or higher
 - Required libraries listed in requirements.txt
-- A csv file containing all the profile links to run getData.py
+- A csv file(GCSJ_data.csv) containing all the profile links to run getData.py
 - for a single profile scraping use scraper.py
 
 To install the required libraries, run:
