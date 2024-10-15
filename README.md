@@ -27,6 +27,7 @@ A backend service written in python that scrapes Google Cloud Skills Boost profi
 
 ## Project Structure
 .
+
 ├── getData.py              # Script to read CSV, scrape profiles, and save to JSON
 
 ├── scraper.py              # Contains the Scraper class for scraping profile data
