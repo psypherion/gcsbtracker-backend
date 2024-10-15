@@ -12,8 +12,8 @@ logging.basicConfig(
     level=logging.INFO,  # Set the log level to INFO
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("server.log"),  # Log to a file
-        logging.StreamHandler()  # Also log to the console
+        logging.FileHandler("server.log"),  
+        logging.StreamHandler() 
     ]
 )
 
