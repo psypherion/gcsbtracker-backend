@@ -1,7 +1,7 @@
 import csv
 import json
 from typing import List, Dict
-from scraper import Scraper  # Make sure to import your Scraper class
+from scraper import Scraper 
 
 def read_csv(file_path: str) -> List[Dict[str, str]]:
     """Reads the CSV file and returns a list of dictionaries with student names and profile URLs."""
@@ -14,7 +14,7 @@ def read_csv(file_path: str) -> List[Dict[str, str]]:
 
 def extract_id_from_url(profile_url: str) -> str:
     """Extracts the profile ID from the Google Cloud Skills Boost profile URL."""
-    return profile_url.split('/')[-1]  # Gets the last part of the URL
+    return profile_url.split('/')[-1]  
 
 def extract_profiles_to_json(csv_file: str, json_file: str) -> None:
     """Extracts profile information from the CSV and saves it to a JSON file."""
@@ -24,7 +24,7 @@ def extract_profiles_to_json(csv_file: str, json_file: str) -> None:
     for student in students:
         student_name = student['Student Name']
         profile_url = student['Google Cloud Skills Boost Profile URL']
-        profile_id = extract_id_from_url(profile_url)  # Extract the profile ID
+        profile_id = extract_id_from_url(profile_url)  
 
         print(f"Processing profile for: {student_name} - {profile_url}")
         scraper = Scraper(profile_url)
@@ -40,7 +40,7 @@ def extract_profiles_to_json(csv_file: str, json_file: str) -> None:
         json.dump(all_profiles, json_file, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
-    csv_file_path = "GCSJ_data.csv"  # Replace with your actual CSV file path
+    csv_file_path = "GCSJ_data.csv"  
     json_file_path = "profiles_data.json"  # Output JSON file path
 
     extract_profiles_to_json(csv_file_path, json_file_path)
