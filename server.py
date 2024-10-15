@@ -2,8 +2,10 @@ from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.routing import Route
 import json
+import asyncio
+import subprocess
 from typing import Dict, Any
-
+import time
 
 def load_data(file_path: str) -> Dict[str, Any]:
     """
@@ -18,7 +20,6 @@ def load_data(file_path: str) -> Dict[str, Any]:
     with open(file_path, 'r', encoding='utf-8') as json_file:
         return json.load(json_file)
 
-
 async def profiles(request) -> JSONResponse:
     """
     Displays all the data from the JSON file.
@@ -31,7 +32,6 @@ async def profiles(request) -> JSONResponse:
     """
     data = load_data('profiles_data.json')  
     return JSONResponse(data)
-
 
 async def get_profile(request) -> JSONResponse:
     """
@@ -58,6 +58,16 @@ async def get_profile(request) -> JSONResponse:
     else:
         return JSONResponse({"error": "Profile not found"}, status_code=404)
 
+async def run_get_data_script() -> None:
+    """
+    Runs the getData.py script at regular intervals.
+    """
+    while True:
+        print("Running getData.py to update profiles...")
+        # Execute the getData.py script
+        subprocess.run(["python", "getData.py"])
+        # Wait for a specified interval before running the script again
+        await asyncio.sleep(1800)  # Wait for 30 minutes (1800 seconds)
 
 # Define the routes
 routes: list[Route] = [
@@ -68,8 +78,12 @@ routes: list[Route] = [
 # Create the application
 app: Starlette = Starlette(debug=True, routes=routes)
 
-# Start the server
+# Start the server and the scheduler
 if __name__ == '__main__':
     import uvicorn
+
+    # Start the scheduler in the background
+    loop = asyncio.get_event_loop()
+    loop.create_task(run_get_data_script())
 
     uvicorn.run(app, host='0.0.0.0', port=8000)
