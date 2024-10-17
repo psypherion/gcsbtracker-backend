@@ -1,12 +1,16 @@
 # gcsbtracker-backend
 A backend service written in python that scrapes Google Cloud Skills Boost profiles to track skill badges and arcade game completions. The project leverages the Starlette framework for the backend API, along with a scheduler to periodically update profile data. Users can retrieve profile information through a RESTful API.
 
+![image](https://github.com/user-attachments/assets/16784033-f382-4df7-af46-eda1bba9d589)
+
+
 ## Table of Contents
 - [Description](#gcsbtracker-backend)
 - [Features](#Features)
 - [Project Structure](#ProjectStructure)
 - [Requirements](#Requirements)
 - [Setup](#Setup)
+- [Disclaimer](#Disclaimer)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -76,7 +80,20 @@ pip install -r requirements.txt
 ```bash
 uvicorn server:app
 ```
+or, 
 
+```bash
+python server.py
+```
+
+___
+## Disclaimer
+With the new V 0.2 Update no need to manually run the getData.py to get the database ready
+running the server.py will automatically check for the existence of required files and if the database (profiles_data.json)
+not present it'll check for the GCSJ_data.csv if present it'll automatically create the database first and then host the server
+and for user firendliness a homepage is also added.
+
+___
 ## Usage
 
 To fetch all profiles, run:
