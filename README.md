@@ -42,6 +42,18 @@ A backend service written in python that scrapes Google Cloud Skills Boost profi
 
 └── profiles_data.json      # Output JSON file for profile data (generated)
 
+project_folder/
+│
+├── server.py
+├── getData.py
+├── profiles_data.json
+├── data/
+│   └── GCSJ_data.csv
+├── static/
+│   └── styles.css
+└── templates/
+    └── homepage.html
+
 
 ## Requirements
 - Python 3.7 or higher
