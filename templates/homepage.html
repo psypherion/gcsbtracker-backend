@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCSB Tracker Backend</title>
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <script>
+        function redirectToProfile() {
+            // Get the entered profile ID
+            const profileId = document.getElementById('profile_id').value;
+            
+            // Redirect to the proper path using the profile ID
+            if (profileId) {
+                window.location.href = `/profiles/id/${profileId}`;
+            } else {
+                alert("Please enter a valid Profile ID");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome to the Google Cloud Skills Boost Tracker</h1>
+
+    <!-- Button to show all profiles -->
+    <h3>To show all profiles click on the button below</h3>
+    <button onclick="window.location.href='/profiles'">Show All Profiles</button>
+    <br><br>
+    <!-- Input form to enter the profile ID -->
+    <form onsubmit="event.preventDefault(); redirectToProfile();">
+        <label for="profile_id">Enter Profile ID:</label>
+        <input type="text" id="profile_id" name="id">
+        <button type="submit">Fetch Profile by ID</button>
+    </form>
+</body>
+</html>

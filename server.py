@@ -1,34 +1,34 @@
 from starlette.applications import Starlette
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, HTMLResponse
 from starlette.routing import Route
+from starlette.staticfiles import StaticFiles
 import json
 import asyncio
 import subprocess
 import logging
 from typing import Dict, Any
+import os
+import uvicorn
+from getData import DataFetcher  
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,  # Set the log level to INFO
+    level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("server.log"),  
-        logging.StreamHandler() 
+        logging.FileHandler("server.log"),
+        logging.StreamHandler()
     ]
 )
 
 logger = logging.getLogger(__name__)
 
+# Check if the JSON file exists
+def json_file_exists(file_path: str) -> bool:
+    return os.path.exists(file_path)
+
+# Load data from the JSON file
 def load_data(file_path: str) -> Dict[str, Any]:
-    """
-    Loads profile data from a JSON file.
-
-    Args:
-        file_path (str): Path to the JSON file.
-
-    Returns:
-        Dict[str, Any]: A dictionary containing the profile data.
-    """
     try:
         with open(file_path, 'r', encoding='utf-8') as json_file:
             logger.info(f"Loading data from {file_path}")
@@ -40,40 +40,29 @@ def load_data(file_path: str) -> Dict[str, Any]:
         logger.error(f"Error decoding JSON from {file_path}")
         return {}
 
+# Serve the homepage with buttons once data is fetched
+async def homepage(request) -> HTMLResponse:
+    with open("templates/homepage.html", "r") as file:
+        html_content = file.read()
+    return HTMLResponse(html_content)
+
+# Display all profiles
 async def profiles(request) -> JSONResponse:
-    """
-    Displays all the data from the JSON file.
-
-    Args:
-        request: The incoming HTTP request.
-
-    Returns:
-        JSONResponse: A JSON response containing all profiles.
-    """
-    data = load_data('profiles_data.json')  
+    data = load_data('profiles_data.json')
     logger.info("Retrieved all profiles.")
     return JSONResponse(data)
 
+# Display a single profile by ID
 async def get_profile(request) -> JSONResponse:
-    """
-    API Endpoint to retrieve profiles by profile_id.
-
-    Args:
-        request: The incoming HTTP request.
-
-    Returns:
-        JSONResponse: A JSON response with the requested profile or an error message.
-    """
-    profile_id: str = request.path_params['id']
-    data: Dict[str, Any] = load_data('profiles_data.json')  
-
-    # Find the profile by ID
-    profile: Dict[str, Any] = {}
+    profile_id = request.path_params['id']
+    data = load_data('profiles_data.json')
+    
+    profile = {}
     for name, info in data.items():
         if info['general']['profile_id'] == profile_id:
             profile = {name: info}
             break
-
+    
     if profile:
         logger.info(f"Profile found for ID: {profile_id}")
         return JSONResponse(profile)
@@ -81,36 +70,45 @@ async def get_profile(request) -> JSONResponse:
         logger.warning(f"Profile not found for ID: {profile_id}")
         return JSONResponse({"error": "Profile not found"}, status_code=404)
 
+# Run the data fetching script if needed
 async def run_get_data_script() -> None:
     """
-    Runs the getData.py script at regular intervals.
+    Checks if profiles_data.json exists. If not, runs the getData.py script
+    to fetch data and creates the file.
     """
-    while True:
-        logger.info("Running getData.py to update profiles...")
-        try:
-            subprocess.run(["python", "getData.py"], check=True)
-            logger.info("Successfully updated profiles.")
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Error while running getData.py: {e}")
-        await asyncio.sleep(1800)  # Wait for 30 minutes (1800 seconds)
+    if not json_file_exists("profiles_data.json"):
+        logger.info("profiles_data.json not found, attempting to scrape data.")
+        
+        # Check if CSV exists
+        if json_file_exists("data/GCSJ_data.csv"):
+            logger.info("Found CSV file. Fetching data...")
+            
+            # Create a DataFetcher instance and extract profiles to JSON
+            fetcher = DataFetcher("data/GCSJ_data.csv", "profiles_data.json")
+            fetcher.extract_profiles_to_json()
 
-# Define the routes
-routes: list[Route] = [
+            logger.info("Data fetching complete, profiles_data.json created.")
+        else:
+            logger.error("CSV file not found. Cannot scrape data.")
+            return
+    else:
+        logger.info("profiles_data.json found, starting server...")
+
+# Define routes
+routes = [
+    Route('/', homepage),  # Homepage with buttons for interaction
     Route('/profiles', profiles),
-    Route('/profiles/id/{id}', get_profile),  # Route to fetch by ID
+    Route('/profiles/id/{id}', get_profile)  # Fetch by profile ID
 ]
 
-# Create the application
-app: Starlette = Starlette(debug=True, routes=routes)
+# Mount the static files directory
+app = Starlette(debug=True, routes=routes)
+app.mount('/static', StaticFiles(directory='static'), name='static')  # Serve static files like styles.css
 
 # Start the server and the scheduler
 if __name__ == '__main__':
-    import uvicorn
-
-    # Start the scheduler in the background
     loop = asyncio.get_event_loop()
-    loop.create_task(run_get_data_script())
-
+    loop.run_until_complete(run_get_data_script())  
     logger.info("Starting server...")
     uvicorn.run(app, host='0.0.0.0', port=8000)
     logger.info("Server stopped.")
