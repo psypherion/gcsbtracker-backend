@@ -32,27 +32,30 @@ A backend service written in python that scrapes Google Cloud Skills Boost profi
 ## Project Structure
 .
 
-├── getData.py              # Script to read CSV, scrape profiles, and save to JSON
+gcsbtracker-backend/
 
-├── scraper.py              # Contains the Scraper class for scraping profile data
+│
 
 ├── server.py               # The Starlette server for the API
 
+├── scraper.py              # Contains the Scraper class for scraping profile data
+
+├── getData.py              # Script to read CSV, scrape profiles, and save to JSON
+
 ├── requirements.txt        # List of project dependencies
 
-└── profiles_data.json      # Output JSON file for profile data (generated)
+|── profiles_data.json      # Output JSON file for profile data (generated)
 
-project_folder/
-│
-├── server.py
-├── getData.py
-├── profiles_data.json
 ├── data/
-│   └── GCSJ_data.csv
+│   └── GCSJ_data.csv      # Source for all the GCSB public profile links
+
 ├── static/
+
 │   └── styles.css
+
 └── templates/
-    └── homepage.html
+
+|   └── homepage.html
 
 
 ## Requirements
