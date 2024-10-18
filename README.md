@@ -26,19 +26,72 @@ A backend service written in python that scrapes Google Cloud Skills Boost profi
 - Logging system for monitoring server activity.
 
 ## Project Structure
-.
-
+```plaintext
+gcsbtracker-backend/
 ├── getData.py              # Script to read CSV, scrape profiles, and save to JSON
-
 ├── scraper.py              # Contains the Scraper class for scraping profile data
-
 ├── server.py               # The Starlette server for the API
-
 ├── requirements.txt        # List of project dependencies
+├── profiles_data.json      # Output JSON file for profile data (generated)
+├── completed_queries.csv    # CSV file for storing resolved queries
+├── templates/              # Directory containing HTML templates for rendering
+│   ├── admin_dashboard.html # Template for the admin dashboard
+│   ├── admin_login.html     # Template for the admin login page
+│   └── homepage.html        # Template for the homepage with query submission
+└── static/                 # Directory for serving static files (e.g., CSS)
+    ├── styles.css          # Stylesheet for the application
+    ├── admin_login.css      # Stylesheet for the admin login
+    └── admin_dashboard.css # Stylesheet for the admin dashboard
 
-└── profiles_data.json      # Output JSON file for profile data (generated)
+```
+___
+## Modifications and Featured Updates
 
+This section outlines the modifications and new features implemented in the `gcsbtracker-backend` project.
 
+### New Features
+1. **Admin Login**: 
+   - An admin login system has been implemented, requiring authentication to access the admin dashboard.
+   - **Admin ID**: `admin@gcsb.makaut.in`
+   - **Admin Password**: `admin6969`
+
+2. **Query Submission and Management**: 
+   - Users can submit queries through a form on the homepage.
+   - Admins can view, resolve, and manage submitted queries via the admin dashboard.
+   - Completed queries are logged and stored in a CSV file (`completed_queries.csv`) with timestamps for tracking purposes.
+
+3. **Scheduled Data Updates**: 
+   - The backend now includes a scheduler that automatically checks for updates and scrapes new data at specified intervals (every 30 minutes).
+
+4. **Enhanced Logging**: 
+   - A logging system has been implemented for monitoring server activity and error tracking. Logs are saved in a `server.log` file for further analysis.
+
+5. **Profile Fetching**: 
+   - Users can fetch all profiles or a specific profile by its ID via RESTful API endpoints.
+
+### Usage of New Features
+- **Admin Login**: 
+   - Navigate to `http://localhost:8000/admin/login` to log in as an admin.
+   - Use the provided admin ID and password to access the dashboard.
+
+- **Query Submission**: 
+   - Navigate to `http://localhost:8000/` to submit queries.
+   - Queries submitted by users will be logged and can be managed in the admin dashboard.
+
+- **Profile Fetching**: 
+   - To fetch all profiles, run:
+     ```bash
+     curl http://localhost:8000/profiles
+     ```
+   - To fetch a specific profile by ID, run:
+     ```bash
+     curl http://localhost:8000/profiles/id/{profile_id}
+     ```
+
+- **Viewing Profiles in a Browser**:
+   - Navigate to `http://localhost:8000/profiles/` to view all profiles.
+   - Navigate to `http://localhost:8000/profiles/id/{id}` to view a specific profile by its ID.
+___
 ## Requirements
 - Python 3.7 or higher
 - Required libraries listed in requirements.txt

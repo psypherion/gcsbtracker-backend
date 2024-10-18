@@ -27,11 +27,21 @@
     <h3>To show all profiles click on the button below</h3>
     <button onclick="window.location.href='/profiles'">Show All Profiles</button>
     <br><br>
+    
     <!-- Input form to enter the profile ID -->
     <form onsubmit="event.preventDefault(); redirectToProfile();">
         <label for="profile_id">Enter Profile ID:</label>
         <input type="text" id="profile_id" name="id">
         <button type="submit">Fetch Profile by ID</button>
+    </form>
+    <br><br>
+
+    <!-- "Ask for Help" section -->
+    <h3>Need Assistance? Submit your query below:</h3>
+    <form action="/" method="post">
+        <label for="query">Enter your query:</label>
+        <input type="text" id="query" name="query" required>
+        <button type="submit">Ask for Help</button>
     </form>
 </body>
 </html>

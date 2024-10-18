@@ -1,0 +1,17 @@
+/* Include General Styles */
+@import url('styles.css');
+
+/* Specific styles for login page */
+h1 {
+    margin-bottom: 30px;
+}
+
+form {
+    width: 100%; /* Adjust width for form */
+    max-width: 400px; /* Max width for the form */
+}
+
+p {
+    color: red;
+    font-size: 1rem;
+}

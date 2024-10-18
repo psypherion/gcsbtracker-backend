@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/admin_dashboard.css">
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <h2>Unresolved Queries</h2>
+    <form action="/admin/dashboard" method="post">
+        <ul>
+            {% for query in queries %}
+                <li>
+                    <input type="radio" id="query-{{ loop.index }}" name="selected_query" value="{{ query.query }}">
+                    <label for="query-{{ loop.index }}">{{ query.query }}</label>
+                </li>
+            {% else %}
+                <li>No unresolved queries have been submitted yet.</li>
+            {% endfor %}
+        </ul>
+        <button type="submit">Mark as Completed</button>
+    </form>
+
+    <h2>Resolved Queries</h2>
+    <ul>
+        {% for resolved_query in resolved_queries %}
+            <li>{{ resolved_query.query }} (Resolved on: {{ resolved_query.timestamp }})</li>
+        {% else %}
+            <li>No resolved queries yet.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

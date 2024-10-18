@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Chatbot</title>
+    <link rel="stylesheet" href="/static/query.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Help Chat</h2>
+        </div>
+        <div id="chat-window" class="chat-window">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="chat-input-container">
+            <input id="chat-input" type="text" placeholder="Ask your question here..." autocomplete="off">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        let firstMessageSent = false;  // Flag to track if the first message is sent
+        const chatWindow = document.getElementById('chat-window');
+        const chatInput = document.getElementById('chat-input');
+        const sendButton = document.getElementById('send-button');
+
+        // Function to handle notifications
+        function sendNotification() {
+            if (Notification.permission === 'granted') {
+                new Notification('Your query has been submitted.');
+            }
+        }
+
+        // Request notification permission if not already granted
+        if (Notification.permission !== 'granted') {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    console.log('Notification permission granted.');
+                }
+            });
+        }
+
+        sendButton.addEventListener('click', () => {
+            const message = chatInput.value;
+            if (message.trim()) {
+                // Display the message in the chat window
+                displayMessage('You', message);
+
+                // Trigger the notification only for the first message
+                if (!firstMessageSent) {
+                    sendNotification();
+                    firstMessageSent = true;  // Set the flag to true after the first message
+                }
+
+                chatInput.value = '';  // Clear the input field
+                // Here, you can send the message to the backend via WebSocket or HTTP
+            }
+        });
+
+        function displayMessage(sender, message) {
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('chat-message', sender === 'You' ? 'user-message' : 'admin-message');
+            
+            const messageText = document.createElement('p');
+            messageText.textContent = `${sender}: ${message}`;
+            
+            messageContainer.appendChild(messageText);
+            chatWindow.appendChild(messageContainer);
+            chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to bottom on new message
+        }
+
+        // Example: Receiving a message from an admin (could be via WebSocket or server response)
+        // displayMessage('Admin', 'How can I assist you with your question?');
+    </script>
+</body>
+</html>
