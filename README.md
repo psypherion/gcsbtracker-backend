@@ -30,7 +30,6 @@ A backend service written in python that scrapes Google Cloud Skills Boost profi
 - Logging system for monitoring server activity.
 
 ## Project Structure
-<<<<<<< HEAD
 ```plaintext
 gcsbtracker-backend/
 ├── getData.py              # Script to read CSV, scrape profiles, and save to JSON
@@ -51,25 +50,6 @@ gcsbtracker-backend/
 ```
 ___
 ## Modifications and Featured Updates
-
-This section outlines the modifications and new features implemented in the `gcsbtracker-backend` project.
-=======
-
-```plaintext
-gcsbtracker-backend/
-│
-├── server.py               # Main server script, handling routes, data loading, and static files
-├── getData.py              # Script for fetching Google Cloud Skill Boost profile data
-├── profiles_data.json      # JSON file where the fetched profile data is stored
-├── data/                   # Folder containing the CSV data file with public profile URLs
-│   └── GCSJ_data.csv       # CSV file with Google Cloud Skills Boost profile links
-├── static/                 # Folder for static assets like CSS files
-│   └── styles.css          # CSS file for styling the homepage
-└── templates/              # Folder for HTML templates
-    └── homepage.html       # HTML file for the homepage that provides a user interface
-
-```
->>>>>>> 084d91627afeda3b96edccd8878dabb12c233358
 
 ### New Features
 1. **Admin Login**: 
