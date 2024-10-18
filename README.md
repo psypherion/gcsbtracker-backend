@@ -1,7 +1,7 @@
 # gcsbtracker-backend
 A backend service written in python that scrapes Google Cloud Skills Boost profiles to track skill badges and arcade game completions. The project leverages the Starlette framework for the backend API, along with a scheduler to periodically update profile data. Users can retrieve profile information through a RESTful API.
 
-![image](https://github.com/user-attachments/assets/16784033-f382-4df7-af46-eda1bba9d589)
+![image](https://github.com/user-attachments/assets/78e833e9-fadd-4b27-8399-fdf637fd0a0f)
 
 
 ## Table of Contents
@@ -57,10 +57,15 @@ ___
    - **Admin ID**: `admin@gcsb.makaut.in`
    - **Admin Password**: `admin6969`
 
+![image](https://github.com/user-attachments/assets/8cecedc5-8d67-4ad4-90b3-dc99f48cd78d)
+
+
 2. **Query Submission and Management**: 
    - Users can submit queries through a form on the homepage.
    - Admins can view, resolve, and manage submitted queries via the admin dashboard.
    - Completed queries are logged and stored in a CSV file (`completed_queries.csv`) with timestamps for tracking purposes.
+
+![image](https://github.com/user-attachments/assets/3e9bebbb-5e35-48d2-86f3-f1d53f0542a8)
 
 3. **Scheduled Data Updates**: 
    - The backend now includes a scheduler that automatically checks for updates and scrapes new data at specified intervals (every 30 minutes).
