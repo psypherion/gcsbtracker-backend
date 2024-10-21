@@ -54,8 +54,6 @@ ___
 ### New Features
 1. **Admin Login**: 
    - An admin login system has been implemented, requiring authentication to access the admin dashboard.
-   - **Admin ID**: `admin@gcsb.makaut.in`
-   - **Admin Password**: `admin6969`
 
 ![image](https://github.com/user-attachments/assets/8cecedc5-8d67-4ad4-90b3-dc99f48cd78d)
 
