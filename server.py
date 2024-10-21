@@ -47,16 +47,20 @@ async def run_get_data_script() -> None:
     if not json_file_exists("profiles_data.json"):
         logger.info("profiles_data.json not found, attempting to scrape data.")
 
-        if json_file_exists("data/GCSJ_data.csv"):
+        if json_file_exists("data/genai.csv"):
             logger.info("Found CSV file. Fetching data...")
-            fetcher = DataFetcher("data/GCSJ_data.csv", "profiles_data.json")
+            fetcher = DataFetcher("data/genai.csv", "profiles_data.json", "data/badges.json")
+            
+            # Call the method to check and generate badges file
+            fetcher.check_and_generate_badges_file()
+
             fetcher.extract_profiles_to_json()
             logger.info("Data fetching complete, profiles_data.json created.")
         else:
             logger.error("CSV file not found. Cannot scrape data.")
-
     else:
         logger.info("profiles_data.json found, starting server...")
+
 
 # Load data from the JSON file
 def load_data(file_path: str) -> Dict[str, Any]:

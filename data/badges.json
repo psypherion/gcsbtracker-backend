@@ -1,0 +1,68 @@
+{
+    "genai_badges": [
+        {
+            "id": 1,
+            "title": "The Basics of Google Cloud Compute"
+        },
+        {
+            "id": 2,
+            "title": "Get Started with Cloud Storage"
+        },
+        {
+            "id": 3,
+            "title": "Get Started with API Gateway"
+        },
+        {
+            "id": 4,
+            "title": "Cloud Speech API: 3 Ways"
+        },
+        {
+            "id": 5,
+            "title": "Networking Fundamentals on Google Cloud"
+        },
+        {
+            "id": 6,
+            "title": "Monitoring in Google Cloud"
+        },
+        {
+            "id": 7,
+            "title": "Cloud Functions: 3 Ways"
+        },
+        {
+            "id": 8,
+            "title": "App Engine: 3 Ways"
+        },
+        {
+            "id": 9,
+            "title": "Level 3: Google Cloud Adventures (Game)"
+        },
+        {
+            "id": 10,
+            "title": "Get Started with Looker"
+        },
+        {
+            "id": 11,
+            "title": "Get Started with Dataplex"
+        },
+        {
+            "id": 12,
+            "title": "Get Started with Google Workspace Tools"
+        },
+        {
+            "id": 13,
+            "title": "Get Started with Pub/Sub"
+        },
+        {
+            "id": 14,
+            "title": "Prompt Design in Vertex AI"
+        },
+        {
+            "id": 15,
+            "title": "Analyze Images with the Cloud Vision API"
+        },
+        {
+            "id": 16,
+            "title": "Develop GenAI Apps with Gemini and Streamlit"
+        }
+    ]
+}
