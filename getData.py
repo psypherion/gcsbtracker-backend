@@ -24,7 +24,6 @@ class DataFetcher:
                 data.append(row)
         return data
 
-    # @staticmethod
     def check_and_generate_badges_file(self) -> None:
         """
         Checks if the badges JSON file exists. If not, generates it using CSVProcessor.
@@ -77,12 +76,21 @@ class DataFetcher:
             # Count the number of GenAI badges earned
             user_badges = profile_info.get('badges', {})
             genai_badges_earned = {badge: details for badge, details in user_badges.items() if badge in genai_badges}
-            profile_info['genai_badges_Earned'] = genai_badges_earned
-            profile_info['general']['number_of_genai_skill_badges'] = len(genai_badges_earned)
+            
+            # Check for "Level 3: Google Cloud Adventures (Game)" badge specifically
+            level_3_game_badge_title = "Level 3: Google Cloud Adventures (Game)"
+            games_done = genai_badges_earned.get(level_3_game_badge_title, None) is not None
+            
+            # Adjust the count of GenAI badges if the game badge is earned
+            if games_done:
+                profile_info['genai_badges_Earned'] = {badge: details for badge, details in genai_badges_earned.items() if badge != level_3_game_badge_title}
+            else:
+                profile_info['genai_badges_Earned'] = genai_badges_earned
 
-            # Count the number of "game" badges
-            games_done = sum(1 for badge in genai_badges_earned if 'game' in badge.lower())
-            profile_info['general']['games_done'] = games_done
+            profile_info['general']['number_of_genai_skill_badges'] = len(profile_info['genai_badges_Earned'])
+
+            # Count the number of "Level 3: Google Cloud Adventures (Game)" badges
+            profile_info['general']['games_done'] = int(games_done)  # Will be 1 if true, otherwise 0
 
             all_profiles[student_name] = profile_info
 
@@ -90,6 +98,7 @@ class DataFetcher:
             json.dump(all_profiles, json_file, ensure_ascii=False, indent=4)
 
         print(f"Profile data extracted and saved to {self.json_file}")
+
 
 
 if __name__ == "__main__":

@@ -166,3 +166,5 @@ profile_data.json
 profiles_data.json
 content.txt
 server.log
+.pylintrc
+data/badges.json

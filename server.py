@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 # Setting up templates for rendering
 templates = Jinja2Templates(directory='templates')
 
-# Store queries in memory for simplicity (in production, you should store this in a database)
+# Store queries in memory for simplicity
 queries: list[dict[str, str]] = []
 resolved_queries: list[dict[str, str]] = []
 
@@ -42,25 +42,21 @@ ADMIN_PASSWORD = "admin6969"
 def json_file_exists(file_path: str) -> bool:
     return os.path.exists(file_path)
 
-# Run the data fetching script if needed
 async def run_get_data_script() -> None:
-    if not json_file_exists("profiles_data.json"):
-        logger.info("profiles_data.json not found, attempting to scrape data.")
-
-        if json_file_exists("data/genai.csv"):
-            logger.info("Found CSV file. Fetching data...")
-            fetcher = DataFetcher("data/genai.csv", "profiles_data.json", "data/badges.json")
-            
-            # Call the method to check and generate badges file
+    logger.info("Attempting to scrape data...")
+    if json_file_exists("data/genai.csv"):
+        logger.info("Found CSV file. Fetching data...")
+        fetcher = DataFetcher("data/genai.csv", "profiles_data.json", "data/badges.json")
+        
+        try:
+            # Check and generate badges file
             fetcher.check_and_generate_badges_file()
-
             fetcher.extract_profiles_to_json()
-            logger.info("Data fetching complete, profiles_data.json created.")
-        else:
-            logger.error("CSV file not found. Cannot scrape data.")
+            logger.info("Data fetching complete, profiles_data.json updated.")
+        except Exception as e:
+            logger.error(f"Error during data fetching: {e}")
     else:
-        logger.info("profiles_data.json found, starting server...")
-
+        logger.error("CSV file not found. Cannot scrape data.")
 
 # Load data from the JSON file
 def load_data(file_path: str) -> Dict[str, Any]:
@@ -163,11 +159,11 @@ async def admin_dashboard(request):
         "resolved_queries": resolved_queries
     })
 
-# Data fetching function to run every 30 minutes
+# Data fetching function to run every minute
 async def run_data_fetcher() -> None:
     while True:
-        await run_get_data_script()
-        await asyncio.sleep(1800)  # Sleep for 30 minutes
+        await run_get_data_script()  # Always attempt to scrape data
+        await asyncio.sleep(120)  # Sleep for 2 minutes
 
 # Define routes
 routes = [
@@ -185,14 +181,14 @@ app.mount('/static', StaticFiles(directory='static'), name='static')
 # Middleware for sessions
 app.add_middleware(SessionMiddleware, secret_key="supersecretkey")
 
+async def startup_event():
+    logger.info("Starting up...")
+    await run_get_data_script()  # Initial data fetch when the server starts
+    asyncio.create_task(run_data_fetcher())  # Start the data fetching task
+    logger.info("Server started.")
+
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-
-    # Run the data fetching script if needed before starting the server
-    loop.run_until_complete(run_get_data_script())
-
-    # Schedule the scraper task
-    loop.create_task(run_data_fetcher())
+    app.add_event_handler("startup", startup_event)
 
     logger.info("Starting server...")
     uvicorn.run(app, host='0.0.0.0', port=8000)
