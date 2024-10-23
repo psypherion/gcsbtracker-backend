@@ -78,7 +78,7 @@ class DataFetcher:
             genai_badges_earned = {badge: details for badge, details in user_badges.items() if badge in genai_badges}
             
             # Check for "Level 3: Google Cloud Adventures (Game)" badge specifically
-            level_3_game_badge_title = "Level 3: Google Cloud Adventures (Game)"
+            level_3_game_badge_title = "Level 3: Google Cloud Adventures"
             games_done = genai_badges_earned.get(level_3_game_badge_title, None) is not None
             
             # Adjust the count of GenAI badges if the game badge is earned
