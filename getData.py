@@ -39,7 +39,6 @@ class DataFetcher:
         else:
             print(f"{self.badges_file} found. Proceeding with profile extraction.")
 
-
     @staticmethod
     def extract_id_from_url(profile_url: str) -> str:
         """Extracts the profile ID from the Google Cloud Skills Boost profile URL."""
@@ -70,6 +69,9 @@ class DataFetcher:
             # Add the ID to the general section of the profile_info
             profile_info['general']['profile_id'] = profile_id
 
+            # Add the profile name to the general section
+            profile_info['general']['profile_name'] = profile_info.pop('profile_name')
+
             # Rename "number_of_badges_earned" to "Number of badges"
             profile_info['general']['Number of badges'] = profile_info['general'].pop('number_of_badges_earned')
 
@@ -78,7 +80,7 @@ class DataFetcher:
             genai_badges_earned = {badge: details for badge, details in user_badges.items() if badge in genai_badges}
             
             # Check for "Level 3: Google Cloud Adventures (Game)" badge specifically
-            level_3_game_badge_title = "Level 3: Google Cloud Adventures"
+            level_3_game_badge_title = "Level 3: Google Cloud Adventures (Game)"
             games_done = genai_badges_earned.get(level_3_game_badge_title, None) is not None
             
             # Adjust the count of GenAI badges if the game badge is earned
@@ -92,13 +94,13 @@ class DataFetcher:
             # Count the number of "Level 3: Google Cloud Adventures (Game)" badges
             profile_info['general']['games_done'] = int(games_done)  # Will be 1 if true, otherwise 0
 
-            all_profiles[student_name] = profile_info
+            # Use profile_id as the key in the all_profiles dictionary
+            all_profiles[profile_id] = profile_info
 
         with open(self.json_file, 'w', encoding='utf-8') as json_file:
             json.dump(all_profiles, json_file, ensure_ascii=False, indent=4)
 
         print(f"Profile data extracted and saved to {self.json_file}")
-
 
 
 if __name__ == "__main__":
